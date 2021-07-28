@@ -1,5 +1,27 @@
 # Thai_Smart_Card_Electron
 
+
+```bash
+# Clone this repository
+git clone https://github.com/riverparkdev/Thai_Smart_Card_Electron
+# Go into the repository
+cd Thai_Smart_Card_Electron
+# Install dependencies
+npm install
+# Run the app
+npm start
+```
+
+If application is error when run npm start please concern the invaid node version in your computer may be difference versions of electron. In this case
+you must rebuild the electron by:-
+
+```bash
+# Run rebuild electron
+npm run link
+# Run the app
+npm start
+```
+
 ## Electron ###
 
 **Clone and run for a quick way to see Electron in action.**
