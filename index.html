@@ -1,0 +1,412 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- <script src='/node_modules/socket.io-client/dist/socket.io.js'></script> -->
+    <script src="./renderer.js"></script>
+    <script src="https://cdn.socket.io/4.1.3/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link href='https://fonts.googleapis.com/css?family=Athiti:400,300&subset=thai,latin' rel='stylesheet'
+        type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Prompt:400,300&subset=thai,latin' rel='stylesheet'
+        type='text/css'>
+    <style>
+        .container-center {
+            margin: auto;
+            width: 60%;
+            /* border: 3px solid #73AD21; */
+            /* padding: 10px; */
+            /* margin-left: 100px; */
+        }
+
+        .center {
+            margin: auto;
+            /* width: 60%; */
+            /* padding: 10px; */
+            text-align: center;
+        }
+
+        .cardPhoto {
+            text-align: center;
+            position: absolute;
+            overflow: hidden;
+            z-index: 100;
+            /* right: 20%;
+            margin-right: 20px;
+            top: 20px;
+            margin-top: 30px; */
+        }
+
+        .w100 {
+            width: 100%;
+        }
+
+        .w50 {
+            width: 50%;
+        }
+
+
+        body {
+            font-family: 'Athiti', sans-serif;
+            font-size: 13px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Prompt', sans-serif;
+            font-size: 13px;
+        }
+
+        #overlay0 {
+            background: url('/images/spinner.gif') no-repeat center center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 9999999;
+        }
+
+        #waiting {
+            background: url('/images/spinner.gif') no-repeat center center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 9999999;
+        }
+
+        #overlay {
+            position: fixed;
+            background: rgba(192, 192, 192, 0.1);
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- <div style="margin-top:10px;"></div> -->
+    <div class="container-center" style="padding-top:20px;border: none;">
+        <!-- <div style="margin-left:50%">
+            <img id='myLogo' style='width:120px;margin-left:110px;' class="center"
+                src='https://riverpark.co.th/_nuxt/img/rvp_logo.d0375d9.png' />
+        </div> -->
+        <!-- <div class="v-image__image v-image__image--cover" 
+            style="background-image: url(&quot;https://riverpark.co.th/_nuxt/img/rvp_logo.d0375d9.png&quot;); 
+            background-position: center center;">
+        </div> -->
+    </div>
+    <!-- <div style="margin-top:10px;"></div> -->
+    <div class="container-center" id='cardInfo'>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3">
+                <label for="c"><b>เลขที่บัตรประชาชน</b></label>
+            </div>
+            <div class="col-sm-6">
+                <input class="w100 text-primary" type="text" placeholder="เลขที่บัตรประชาชน" id="id" value='' required>
+            </div>
+            <div class="col-sm-3">
+                <img id='myPhoto' style='width:90px;' class="cardPhoto" src='' />
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>คำนำหน้าชื่อ</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="คำนำหน้าชื่อ" id="thTitle"
+                    required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>ชื่อ</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="ชื่อ" id="thName" required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>นามสกุล</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="นามสกุล" id="thSName"
+                    required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>คำนำหน้าชื่อ(อังกฤษ)</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="คำนำหน้าชื่อ(อังกฤษ)"
+                    id="enTitle" required></div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>ชื่อ(อังกฤษ)</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="ชื่อ(อังกฤษ)" id="enName"
+                    required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>นามสกุล(อังกฤษ)</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="นามสกุล(อังกฤษ)"
+                    id="enSName" required></div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>วันเกิด</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="วันเกิด" id="birthday"
+                    required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>เพศ</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="เพศ" id="gender" required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>ผู้ออกบัตร</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" fullwidthtype="text" placeholder="ผู้ออกบัตร"
+                    id="issuer" required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>วันที่ออกบัตร</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="วันที่ออกบัตร"
+                    id="issueDate" required></div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>วันหมดอายุ</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="วันหมดอายุ" id="expireDate"
+                    required></div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>บ้านเลขที่</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="บ้านเลขที่" id="addrId"
+                    required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>หมู่ที่</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="หมู่ที่" id="addrMoo"
+                    required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>ตรอก</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="ตรอก" id="addrAlley"
+                    required></div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>ซอย</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="ซอย" id="addrSoi" required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>ถนน</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="ถนน" id="addrStreet"
+                    required></div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>ตำบล/แขวง</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="ตำบล/แขวง" id="addrDistrict"
+                    required></div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>อำเภอ/เขต</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="อำเภอ/เขต" id="addrZone"
+                    required>
+            </div>
+        </div>
+        <div class="row" style="margin-top:1px;">
+            <div class="col-sm-3"><label for="c"><b>จังหวัด</b></label></div>
+            <div class="col-sm-6"><input class="w100 text-primary" type="text" placeholder="จังหวัด" id="addrProvince"
+                    required>
+            </div>
+        </div>
+
+        <div class="center" style="margin-top: 7px;">
+            <button type="button" style="font-size:14px;font-weight: bold;" class="btn btn-outline-danger"
+                onclick="clearvalue()">ล้างหน้าจอ</button>
+            <button type="button" style="font-size:14px;font-weight: bold;" class="btn btn-outline-success"
+                onclick="readCard()">อ่านข้อมูลบัตร</button>
+        </div>
+        <div id="overlay" class="hide">
+            <div id="waiting"></div>
+        </div>
+</body>
+
+<script>
+
+    var socket = io.connect("http://localhost:19282",
+        {
+            // secure: true,
+            reconnection: true,
+            rejectUnauthorized: false,
+            reconnectionDelayMax: 10000,
+            // auth: {
+            //     token: 'Basic ' + utf8_to_b64("u001:123456")
+            // },
+            transports: ['websocket'],
+        });
+
+    socket.on("connected", (data) => {
+        // revert to classic upgrade
+        //socket.io.opts.transports = ["polling", "websocket"];
+        console.log("connected:\n%o", data);
+    });
+
+    socket.on("connect_error", (data) => {
+        // revert to classic upgrade
+        //socket.io.opts.transports = ["polling", "websocket"];
+        console.log("connect_error:\n%o", data);
+    });
+
+    // handle the event sent with socket.send()
+    socket.on("device-activated", (data) => {
+        var o = document.getElementById('overlay');
+        if (o.classList.contains('hide')) {
+            o.classList.remove('hide')
+        }
+        console.log("device-activated:\n%o", data);
+    });
+
+    // handle the event sent with socket.emit()
+    socket.on("card-inserted", (data) => {
+        var o = document.getElementById('overlay');
+        if (o.classList.contains('hide')) {
+            o.classList.remove('hide')
+        }
+        console.log("card-inserted:\n%o", data);
+    });
+
+    // handle the event sent with socket.emit()
+    socket.on("card-info", (data) => {
+        var o = document.getElementById('overlay');
+        if (o.classList.contains('hide')) {
+            o.classList.remove('hide')
+        }
+        console.log("card-info:\n%o", data);
+        let c
+        if (data != undefined && data.cardInfo != undefined && data.cardInfo != null) {
+            c = JSON.parse(data.cardInfo);
+        }
+        console.log(c);
+        document.getElementById('id').value = c.cid;
+        document.getElementById('thTitle').value = c.thTitle;
+        document.getElementById('thName').value = c.thName;
+        document.getElementById('thSName').value = c.thSName;
+        document.getElementById('enTitle').value = c.enTitle;
+        document.getElementById('enName').value = c.enName;
+        document.getElementById('enSName').value = c.enSName;
+        document.getElementById('birthday').value = c.dateOfBirth;
+        document.getElementById('gender').value = c.gender;
+        document.getElementById('issuer').value = c.issuer;
+        document.getElementById('issueDate').value = c.issueDate;
+        document.getElementById('expireDate').value = c.expireDate;
+        document.getElementById('addrId').value = c.addrAddress;
+        document.getElementById('addrMoo').value = c.addrMoo;
+        document.getElementById('addrAlley').value = c.addrAlley;
+        document.getElementById('addrSoi').value = c.addrSoi;
+        document.getElementById('addrStreet').value = c.addrStreet;
+        document.getElementById('addrDistrict').value = c.addrDistrictType + c.addrDistrict;
+        document.getElementById('addrZone').value = c.addrZoneType + c.addrZone;
+        document.getElementById('addrProvince').value = c.addrProvince;
+        let myPhoto = document.getElementById('myPhoto');
+        myPhoto.src = c.photo;
+        var o = document.getElementById('overlay');
+        if (!o.classList.contains('hide')) {
+            o.classList.add('hide')
+        }
+    });
+
+    // handle the event sent with socket.emit()
+    socket.on("card-removed", (data) => {
+        var o = document.getElementById('overlay');
+        if (!o.classList.contains('hide')) {
+            o.classList.add('hide')
+        }
+        clearvalue()
+        console.log("card-removed:\n%o", data);
+    });
+
+    // handle the event sent with socket.emit()
+    socket.on("device-deactivated", (data) => {
+        clearvalue()
+        console.log("device-deactivated:\n%o", data);
+        var o = document.getElementById('overlay');
+        if (!o.classList.contains('hide')) {
+            o.classList.add('hide')
+        }
+    });
+
+    socket.on("error", (data) => {
+        console.log("error:\n%o", data);
+        var o = document.getElementById('overlay');
+        if (!o.classList.contains('hide')) {
+            o.classList.add('hide')
+        }
+    });
+
+
+    // function addMessage(message) {
+    //     var text = document.createTextNode(message),
+    //         el = document.createElement('li'),
+    //         messages = document.getElementById('messages');
+
+    //     el.appendChild(text);
+    //     messages.appendChild(el);
+    // }
+
+    function clearvalue() {
+        document.getElementById('id').value = '';
+        document.getElementById('thTitle').value = '';
+        document.getElementById('thName').value = '';
+        document.getElementById('thSName').value = '';
+        document.getElementById('enTitle').value = '';
+        document.getElementById('enName').value = '';
+        document.getElementById('enSName').value = '';
+        document.getElementById('birthday').value = '';
+        document.getElementById('gender').value = '';
+        document.getElementById('issuer').value = '';
+        document.getElementById('issueDate').value = '';
+        document.getElementById('expireDate').value = '';
+        document.getElementById('addrId').value = '';
+        document.getElementById('addrMoo').value = '';
+        document.getElementById('addrAlley').value = '';
+        document.getElementById('addrSoi').value = '';
+        document.getElementById('addrStreet').value = '';
+        document.getElementById('addrDistrict').value = '';
+        document.getElementById('addrZone').value = '';
+        document.getElementById('addrProvince').value = '';
+        let myPhoto = document.getElementById('myPhoto');
+        myPhoto.src = '';
+    }
+
+    function readCard() {
+        clearvalue()
+        socket.emit('read-card');
+        var o = document.getElementById('overlay');
+        if (o.classList.contains('hide')) {
+            o.classList.remove('hide')
+        }
+    }
+
+    function utf8_to_b64(str) {
+        return window.btoa(unescape(encodeURIComponent(str)));
+    }
+
+    function b64_to_utf8(str) {
+        return decodeURIComponent(escape(window.atob(str)));
+    }
+
+</script>
+
+</html>
