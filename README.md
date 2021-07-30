@@ -34,8 +34,8 @@ Thank for k. Kawin Viriyaprasopsoo. for your github repository.
 
 ## SmartCard ###
 
-/* eslint-disable no-console */
-/*
+eslint-disable no-console
+
 * Thai National ID Card reader in NodeJS
 *
 * Linux
@@ -52,9 +52,9 @@ Thank for k. Kawin Viriyaprasopsoo. for your github repository.
 * @requires smartcard legacy-encoding hex2imagebase64
 * @since 11/06/2019
 *
-*/
 
-/* 
+
+ 
 * @revise&changed by Naris Vichateerasakul <naris@riverpark.co.th>
 * @since 2021/07/12
 * @changed 
@@ -62,8 +62,6 @@ Thank for k. Kawin Viriyaprasopsoo. for your github repository.
 * 2. export function getCardInfo to reading the data from card that has been inserted.
 * 3. export function start to start capture the device
 * 4. export function stop to stop capture the device 
-*/
-
 
 
 ## Electron ###
