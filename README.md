@@ -22,6 +22,50 @@ npm run link
 npm start
 ```
 
+after program read the personal card, the program will save data into folder data in the installed application directory, for using later when readed.
+In this case, the author need to encrypt the readed personal but now i think will promote in the next vesions.
+
+Revised by:-
+
+Naris Vichateerasakul.
+
+Thank for k. Kawin Viriyaprasopsoo. for your github repository. 
+
+
+## SmartCard ###
+
+/* eslint-disable no-console */
+/*
+* Thai National ID Card reader in NodeJS
+*
+* Linux
+* apt install libpcsclite-dev libpcsclite1 pcscd build-essential
+*
+* Windows
+* yarn global add windows-build-tools
+*
+* All OS
+* yarn add --dev eslint eslint-config-standard eslint-plugin-import eslint-plugin-node eslint-plugin-promise eslint-plugin-standard
+* yarn add smartcard legacy-encoding hex2imagebase64
+*
+* @author Kawin Viriyaprasopsook <kawin.vir@zercle.tech>
+* @requires smartcard legacy-encoding hex2imagebase64
+* @since 11/06/2019
+*
+*/
+
+/* 
+* @revise&changed by Naris Vichateerasakul <naris@riverpark.co.th>
+* @since 2021/07/12
+* @changed 
+* 1. return the cardInfo when the card is read (status: deviceStatus.dataStatus=1(ready))
+* 2. export function getCardInfo to reading the data from card that has been inserted.
+* 3. export function start to start capture the device
+* 4. export function stop to stop capture the device 
+*/
+
+
+
 ## Electron ###
 
 **Clone and run for a quick way to see Electron in action.**
@@ -64,8 +108,6 @@ Note: If you're using Linux Bash for Windows, [see this guide](https://www.howto
 - [electron/electron-api-demos](https://github.com/electron/electron-api-demos) - an Electron app that teaches you how to use Electron
 - [hokein/electron-sample-apps](https://github.com/hokein/electron-sample-apps) - small demo apps for the various Electron APIs
 
-
-## SmartCard ###
 
 
 ## License
