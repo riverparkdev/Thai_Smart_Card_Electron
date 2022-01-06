@@ -44,7 +44,7 @@
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
-    "mini-css-extract-plugin": "^2.1.0",
+    "mini-css-extract-plugin": "^2.4.6",
     "nodejs-base64-converter": "^1.0.5",
     "path": "^0.12.7",
     "pcsclite": "^1.0.0",
