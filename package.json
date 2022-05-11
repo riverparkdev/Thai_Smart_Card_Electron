@@ -38,7 +38,7 @@
     "@pokusew/pcsclite": "^0.6.0",
     "bindings": "^1.5.0",
     "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.0.1",
     "electron": "^13.1.7",
     "electron-shutdown-command": "^2.0.1",
     "express": "^4.17.1",
