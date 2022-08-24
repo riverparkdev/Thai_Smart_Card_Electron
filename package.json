@@ -22,7 +22,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron-builder": "^22.11.7",
-    "electron-packager": "^15.3.0",
+    "electron-packager": "^16.0.0",
     "electron-rebuild": "^2.3.5",
     "eslint": "^7.30.0",
     "eslint-config-standard": "^16.0.3",
